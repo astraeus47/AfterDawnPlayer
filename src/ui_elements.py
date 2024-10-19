@@ -1,5 +1,9 @@
 import customtkinter as ctk
 
+class DrawButton(ctk.CTkButton):
+    def __init__(self, master, **kwargs):
+        super().__init__(master, **kwargs)
+
 # This class was created to make scrollable frames.
 class DrawScrollableFrame(ctk.CTkScrollableFrame):
     def __init__(self, master, item_list, command = None, **kwargs):
