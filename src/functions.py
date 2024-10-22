@@ -7,7 +7,7 @@ def load_music_list():
     music_list = []
     music_path = []
     music_file = filedialog.askopenfilename(
-        defaultextension=".mp3",  # Definindo o .mp3 como padrão
+        defaultextension=".mp3", # mp3 set as default. 
         filetypes=[
             ("Audio files", "*.mp3 *.wav *.ogg *.flac *.aac *.m4a"),
             ("MP3 files", "*.mp3"),
