@@ -19,23 +19,6 @@ class MainFrame(ctk.CTkFrame):
         self.music_list()
         self.app_title()
 
-    def add_music(self): # precisa ser terminado, modificado para adionar a musica no scrollable frame.
-        try:
-            folder = filedialog.askdirectory(title = "Select your music folder.")
-            files = os.listdir(folder)
-
-            for music in files:
-                if music.lower().endswith(audio_extensions):
-                    if os.path.join(folder, music) in playlist:
-                        print("this song was just added.")
-                        return
-                    else:
-                        playlist.insert(tk.END, os.path.basename(music))
-                        playlist_path.append(os.path.join(folder, music))
-
-        except Exception as error:
-            print(error)
-
     def control_buttons(self):
         # Configure Control Buttons.
         width = app_width - 40
@@ -57,7 +40,7 @@ class MainFrame(ctk.CTkFrame):
         fg_color = '#3d3d3d'
 
         # Music list, scrollable frame.
-        self.music_list_frame = DrawScrollableFrame(self, width = width, height = height, fg_color = fg_color)
+        self.music_list_frame = DrawScrollableFrame(self, width = width, height = height, fg_color = fg_color, command = self.button_events, music_list = playlist_path)
         self.music_list_frame.grid(row = 1, column = 0, padx = 5, pady = 5, sticky = 'nsew')
 
     def app_title(self):
@@ -84,6 +67,49 @@ class MainFrame(ctk.CTkFrame):
             )
         self.title_label.grid(row = 0, column = 0)
 
+    def add_music(self):
+        try:
+            folder = filedialog.askdirectory(title = "Select your music folder.")
+            files = os.listdir(folder)
+
+            for music in files:
+                if music.lower().endswith(audio_extensions):
+                    if os.path.join(folder, music) in playlist:
+                        print("this song was just added.")
+                        return
+                    else:
+                        #playlist.insert(tk.END, os.path.basename(music))
+                        playlist_path.append(os.path.join(folder, music))
+                        print(playlist_path)
+
+            self.update_music_list()
+
+        except Exception as error:
+            print(error)
+
+    def update_music_list(self):
+        # Detroy other widgets.
+        for widget in self.music_list_frame.winfo_children():
+            widget.destroy()
+
+        # Configure Music List.
+        width = app_width - 40
+        height = 100
+        fg_color = '#3d3d3d'
+
+        # Music list, scrollable frame.
+        self.music_list_frame = DrawScrollableFrame(self, width = width, height = height, fg_color = fg_color, command = self.button_events, music_list = playlist_path)
+        self.music_list_frame.grid(row = 1, column = 0, padx = 5, pady = 5, sticky = 'nsew')
+
+    def button_events(self):
+        print(f"radiobutton frame modified: {self.music_list_frame.get_checked_item()}")
+        music_name = self.music_list_frame.get_checked_item()
+        if music_name in playlist_path:
+            index = playlist_path.index(music_name)
+            # return self.music_path[index]
+            mixer.music.load(playlist_path[index])
+            mixer.music.play()
+
 class MusicPlayer(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -98,6 +124,9 @@ class MusicPlayer(ctk.CTk):
         # Main frame to group all frames.
         self.main_frame = MainFrame(self, width = app_width, height = app_height)
         self.main_frame.grid(row = 0, column = 0, sticky = "nsew")
+
+        # Initialize mixer from Pygame.
+        mixer.init()
 
 if __name__ == '__main__':
     app = MusicPlayer()
