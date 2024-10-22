@@ -3,6 +3,10 @@ from src.ui_elements import *
 app_width = 620 # window width
 app_height = 300 # window height
 
+audio_extensions = (".mp3", ".wav", ".flac", ".ogg", ".aac", ".wma", ".m4a", ".aiff")
+playlist = []
+playlist_path = []
+
 class MainFrame(ctk.CTkFrame):
     def __init__(self, master, width, height):
         super().__init__(master, width = width, height = height, fg_color = '#232323')
@@ -15,6 +19,23 @@ class MainFrame(ctk.CTkFrame):
         self.music_list()
         self.app_title()
 
+    def add_music(self): # precisa ser terminado, modificado para adionar a musica no scrollable frame.
+        try:
+            folder = filedialog.askdirectory(title = "Select your music folder.")
+            files = os.listdir(folder)
+
+            for music in files:
+                if music.lower().endswith(audio_extensions):
+                    if os.path.join(folder, music) in playlist:
+                        print("this song was just added.")
+                        return
+                    else:
+                        playlist.insert(tk.END, os.path.basename(music))
+                        playlist_path.append(os.path.join(folder, music))
+
+        except Exception as error:
+            print(error)
+
     def control_buttons(self):
         # Configure Control Buttons.
         width = app_width - 40
@@ -24,6 +45,10 @@ class MainFrame(ctk.CTkFrame):
         # Control Buttons frame.
         self.buttons_frame = DrawFrame(self, width= width, height = height, fg_color = fg_color)
         self.buttons_frame.grid(row = 2, column = 0, padx = 5, pady = 5, sticky = 'nsew')
+
+        # Add music button.
+        self.add_music_btn = DrawButton(self.buttons_frame, text = "Add Music", command = self.add_music)
+        self.add_music_btn.grid(row = 0, column = 0, sticky = 'nsew')
 
     def music_list(self):
         # Configure Music List.
@@ -37,7 +62,7 @@ class MainFrame(ctk.CTkFrame):
 
     def app_title(self):
         # Configure Title:
-        text = 'After Dawn Music Player'
+        text = "After Dawn Music Player"
         width = app_width
         height = 40
         fg_color = '#0078ff'

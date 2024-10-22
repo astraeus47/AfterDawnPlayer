@@ -1,4 +1,8 @@
 import customtkinter as ctk
+from pygame import mixer
+from tkinter import filedialog
+import tkinter as tk
+import os
 
 class DrawButton(ctk.CTkButton):
     def __init__(self, master, **kwargs):
