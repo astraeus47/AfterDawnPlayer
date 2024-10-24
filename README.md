@@ -1,5 +1,7 @@
 # After Dawn Music Player
 
+![After Dawn Music Player](https://i.ibb.co/kg9z4h7/image.png)
+
 **Desenvolvedor**: 27prxblms @Xzhyan  
 **Versão**: 1.0.2  
 **Idioma Padrão**: Inglês (US)  
