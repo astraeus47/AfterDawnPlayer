@@ -1,4 +1,6 @@
 from src.ui_elements import *
+from config.settings import *
+
 from pygame import mixer
 from tkinter import filedialog
 from PIL import Image
@@ -11,18 +13,10 @@ from mutagen.mp4 import MP4
 import wave
 import contextlib
 
-
-app_width = 620 # window width
-app_height = 320 # window height
-
-audio_extensions = (".mp3", ".wav", ".flac", ".ogg", ".aac", ".wma", ".m4a", ".aiff")
-playlist = []
-
-
 class MusicPlayer(ctk.CTk):
     def __init__(self):
         super().__init__()
-        self.title(" After Dawn Music Player")
+        self.title("ᴅᴇᴠᴇʟᴏᴘᴇᴅ ʙʏ 27ᴘʀxʙʟᴍꜱ")
         self.geometry(f'{app_width}x{app_height}')
         self.resizable(False, False)
 
@@ -40,7 +34,7 @@ class MusicPlayer(ctk.CTk):
 
 class MainFrame(ctk.CTkFrame):
     def __init__(self, master, width, height):
-        super().__init__(master, width = width, height = height, fg_color = '#232323')
+        super().__init__(master, width = width, height = height, fg_color = dark_one)
 
         # Configure the grid for MainFrame layout.
         self.grid_columnconfigure(1, weight  = 1)
@@ -56,13 +50,10 @@ class MainFrame(ctk.CTkFrame):
         text = "After Dawn Music Player"
         width = app_width
         height = 20
-        fg_color = '#8300ff'
         corner_radius = 0
-        text_fg_color = 'transparent'
-        font = ('Impact', 30)
 
         # Title frame.
-        self.title_frame = DrawFrame(self, width = width, height = height, fg_color = fg_color)
+        self.title_frame = DrawFrame(self, width = width, height = height, fg_color = purple_one)
         self.title_frame.grid(row = 0, column = 0, sticky = 'nsew')
 
         # Title text label.
@@ -72,7 +63,7 @@ class MainFrame(ctk.CTkFrame):
             width = width,
             height = height,
             fg_color = text_fg_color,
-            font = font
+            font = title_font
             )
         self.title_label.grid(row = 0, column = 0)
 
@@ -81,7 +72,6 @@ class MainFrame(ctk.CTkFrame):
         # Configure Control Buttons.
         width = app_width - 40
         height = 50
-        fg_color = '#2a2a2a'
 
         # Buttons icons.
         #play_icon_path = "musicplayer/icons/play.png"
@@ -90,13 +80,14 @@ class MainFrame(ctk.CTkFrame):
         #pause_icon = ctk.CTkImage(light_image = Image.open(pause_icon_path), dark_image = Image.open(pause_icon_path), size = (20, 20))
 
         # Control Buttons frame.
-        self.buttons_frame = DrawFrame(self, width= width, height = height, fg_color = fg_color)
+        self.buttons_frame = DrawFrame(self, width= width, height = height, fg_color = grey_one)
         self.buttons_frame.grid(row = 1, column = 0, padx = 5, pady = 5, sticky = 'nsew')
 
         # Add music button.
         self.add_music_btn = DrawButton(
             self.buttons_frame,
             text = "Add",
+            font = button_font,
             fg_color = '#8300ff',
             hover_color = '#008fff',
             command = self.add_music
@@ -108,8 +99,8 @@ class MainFrame(ctk.CTkFrame):
             self.buttons_frame,
             width = 10,
             text = "",
-            fg_color = '#8300ff',
-            hover_color = '#008fff',
+            fg_color = purple_one,
+            hover_color = hover_color,
             # image = play_icon,
             command = self.unpause_music
             )
