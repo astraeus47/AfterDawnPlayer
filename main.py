@@ -11,11 +11,30 @@ import contextlib
 import os
 
 app_width = 620 # window width
-app_height = 360 # window height
+app_height = 320 # window height
 
 
 audio_extensions = (".mp3", ".wav", ".flac", ".ogg", ".aac", ".wma", ".m4a", ".aiff")
 playlist = []
+
+
+class MusicPlayer(ctk.CTk):
+    def __init__(self):
+        super().__init__()
+        self.title(" After Dawn Music Player")
+        self.geometry(f'{app_width}x{app_height}')
+        self.resizable(False, False)
+
+        # Configure the grid for main layout of window.
+        self.grid_columnconfigure(0, weight = 1)
+        self.grid_rowconfigure(0, weight = 1)
+
+        # Main frame to group all frames.
+        self.main_frame = MainFrame(self, width = app_width, height = app_height)
+        self.main_frame.grid(row = 0, column = 0, sticky = 'nsew')
+
+        # Initialize Pygame mixer.
+        mixer.init()
 
 
 class MainFrame(ctk.CTkFrame):
@@ -23,25 +42,26 @@ class MainFrame(ctk.CTkFrame):
         super().__init__(master, width = width, height = height, fg_color = '#0f0f0f')
 
         # Configure the grid for MainFrame layout.
-        self.grid_columnconfigure(1, weight  = 1)
-        self.grid_rowconfigure(1, weight = 1)
+        self.grid_columnconfigure(0, weight  = 1)
+        self.grid_rowconfigure(0, weight = 1)
 
         self.app_title()
-        self.music_list()
         self.control_buttons()
+        self.music_list()
         #self.music_progress_bar()
 
     def app_title(self):
         # Configure Title:
         text = "After Dawn Music Player"
         width = app_width
-        height = 40
+        height = 20
         fg_color = '#8300ff'
+        corner_radius = 0
         text_fg_color = 'transparent'
         font = ('Impact', 30)
 
         # Title frame.
-        self.title_frame = DrawFrame(self, width = width, height = height, fg_color = fg_color)
+        self.title_frame = DrawFrame(self, width = width, height = height, fg_color = fg_color, corner_radius = corner_radius)
         self.title_frame.grid(row = 0, column = 0, sticky = 'nsew')
 
         # Title text label.
@@ -56,21 +76,10 @@ class MainFrame(ctk.CTkFrame):
         self.title_label.grid(row = 0, column = 0)
 
 
-    def music_list(self):
-        # Configure Music List.
-        width = app_width - 40
-        height = 60
-        fg_color = '#2a2a2a'
-
-        # Music list, scrollable frame.
-        self.music_list_frame = DrawScrollableFrame(self, width = width, height = height, fg_color = fg_color, label_anchor = 's', command = self.button_events, music_list = playlist)
-        self.music_list_frame.grid(row = 1, column = 0, padx = 5, pady = 5, sticky = 'nsew')
-
-
     def control_buttons(self):
         # Configure Control Buttons.
         width = app_width - 40
-        height = 40
+        height = 50
         fg_color = '#2a2a2a'
 
         # Buttons icons.
@@ -81,7 +90,7 @@ class MainFrame(ctk.CTkFrame):
 
         # Control Buttons frame.
         self.buttons_frame = DrawFrame(self, width= width, height = height, fg_color = fg_color)
-        self.buttons_frame.grid(row = 2, column = 0, padx = 5, pady = 5, sticky = 'nsew')
+        self.buttons_frame.grid(row = 1, column = 0, padx = 5, pady = 5, sticky = 'nsew')
 
         # Add music button.
         self.add_music_btn = DrawButton(
@@ -138,6 +147,18 @@ class MainFrame(ctk.CTkFrame):
         self.volume_slider.set(50)
         self.volume_slider.grid(row = 0, column = 4)
 
+
+    def music_list(self):
+        # Configure Music List.
+        width = app_width - 40
+        height = 80
+        fg_color = '#2a2a2a'
+
+        # Music list, scrollable frame.
+        self.music_list_frame = DrawScrollableFrame(self, width = width, height = height, fg_color = fg_color, label_anchor = 's', command = self.button_events, music_list = playlist)
+        self.music_list_frame.grid(row = 2, column = 0, padx = 5, pady = (0, 5), sticky = 'nsew')
+
+
     def add_music(self):
         try:
             folder = filedialog.askdirectory(title = "Select your music folder.")
@@ -169,7 +190,7 @@ class MainFrame(ctk.CTkFrame):
 
         # Music list, scrollable frame.
         self.music_list_frame = DrawScrollableFrame(self, width = width, height = height, fg_color = fg_color, command = self.button_events, music_list = playlist)
-        self.music_list_frame.grid(row = 1, column = 0, padx = 5, pady = 5, sticky = 'nsew')
+        self.music_list_frame.grid(row = 2, column = 0, padx = 5, pady = 5)
 
     # Based on the checked item, music is played.
     def button_events(self):
@@ -236,25 +257,6 @@ class MainFrame(ctk.CTkFrame):
         except Exception as e:
             print(f"Error getting length for {filename}: {e}")
             return None
-
-
-class MusicPlayer(ctk.CTk):
-    def __init__(self):
-        super().__init__()
-        self.title(" After Dawn Music Player")
-        self.geometry(f'{app_width}x{app_height}')
-        self.resizable(False, False)
-
-        # Configure the grid for main layout of window.
-        self.grid_columnconfigure(0, weight = 1)
-        self.grid_rowconfigure(0, weight = 1)
-
-        # Main frame to group all frames.
-        self.main_frame = MainFrame(self, width = app_width, height = app_height)
-        self.main_frame.grid(row = 0, column = 0, sticky = "nsew")
-
-        # Initialize Pygame mixer.
-        mixer.init()
 
 
 if __name__ == '__main__':
