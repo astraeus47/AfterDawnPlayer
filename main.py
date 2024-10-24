@@ -42,7 +42,7 @@ class MainFrame(ctk.CTkFrame):
 
         self.app_title()
         self.control_buttons()
-        self.music_list()
+        #self.music_list()
         #self.music_progress_bar()
 
     def app_title(self):
@@ -88,8 +88,8 @@ class MainFrame(ctk.CTkFrame):
             self.buttons_frame,
             text = "Add",
             font = button_font,
-            fg_color = '#8300ff',
-            hover_color = '#008fff',
+            fg_color = purple_one,
+            hover_color = hover_button,
             command = self.add_music
             )
         self.add_music_btn.grid(row = 0, column = 0, padx = 5, pady = 5)
@@ -111,8 +111,8 @@ class MainFrame(ctk.CTkFrame):
             self.buttons_frame,
             width = 10,
             text = "",
-            fg_color = '#8300ff',
-            hover_color = '#008fff',
+            fg_color = purple_one,
+            hover_color = hover_color,
             # image = pause_icon,
             command = self.pause_music
             )
@@ -122,8 +122,9 @@ class MainFrame(ctk.CTkFrame):
         self.remove_all_btn = DrawButton(
             self.buttons_frame,
             text = "Remove All",
-            fg_color = '#8300ff',
-            hover_color = '#008fff',
+            font = button_font,
+            fg_color = purple_one,
+            hover_color = hover_button,
             command = self.remove_all
             )
         self.remove_all_btn.grid(row = 0, column = 3, padx = 5, pady = 5)
@@ -144,10 +145,9 @@ class MainFrame(ctk.CTkFrame):
         # Configure Music List.
         width = app_width - 40
         height = 80
-        fg_color = '#2a2a2a'
 
         # Music list, scrollable frame.
-        self.music_list_frame = DrawScrollableFrame(self, width = width, height = height, fg_color = fg_color, label_anchor = 's', command = self.button_events, music_list = playlist)
+        self.music_list_frame = DrawScrollableFrame(self, width = width, height = height, fg_color = grey_one, label_anchor = 's', command = self.button_events, music_list = playlist)
         self.music_list_frame.grid(row = 2, column = 0, padx = 5, pady = (0, 5), sticky = 'nsew')
 
 
@@ -172,18 +172,15 @@ class MainFrame(ctk.CTkFrame):
 
 
     def update_music_list(self):
-        # Detroy other widgets.
-        for widget in self.music_list_frame.winfo_children():
-            widget.destroy()
-
         # Configure Music List.
         width = app_width - 40
         height = 60
-        fg_color = '#3d3d3d'
+        
+        self.music_list()
 
         # Music list, scrollable frame.
-        self.music_list_frame = DrawScrollableFrame(self, width = width, height = height, fg_color = fg_color, command = self.button_events, music_list = playlist)
-        self.music_list_frame.grid(row = 2, column = 0, padx = 5, pady = 5)
+        # self.music_list_frame = DrawScrollableFrame(self, width = width, height = height, fg_color = fg_color, command = self.button_events, music_list = playlist)
+        # self.music_list_frame.grid(row = 2, column = 0, padx = 5, pady = 5)
 
     # Based on the checked item, music is played.
     def button_events(self):
@@ -204,7 +201,8 @@ class MainFrame(ctk.CTkFrame):
 
     # Set music volume.
     def set_volume(self, volume):
-        set_volume = int(volume) / 100
+        music_volume = int(volume) / 100
+        mixer.music.set_volume(music_volume)
 
     # Remove all music.
     def remove_all(self):
@@ -241,6 +239,7 @@ class MainFrame(ctk.CTkFrame):
                     return frames / float(rate)
             else:
                 raise ValueError(f"Unsupported file type: {extension}")
+
         except Exception as e:
             print(f"Error getting length for {filename}: {e}")
             return None
