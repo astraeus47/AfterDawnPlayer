@@ -7,7 +7,6 @@ audio_extensions = (".mp3", ".wav", ".flac", ".ogg", ".aac", ".wma", ".m4a", ".a
 playlist = []
 playlist_path = []
 
-
 class MainFrame(ctk.CTkFrame):
     def __init__(self, master, width, height):
         super().__init__(master, width = width, height = height, fg_color = '#232323')
@@ -107,7 +106,6 @@ class MainFrame(ctk.CTkFrame):
         except Exception as error:
             print(error)
 
-
     def update_music_list(self):
         # Detroy other widgets.
         for widget in self.music_list_frame.winfo_children():
@@ -166,6 +164,12 @@ class MusicPlayer(ctk.CTk):
         self.main_frame = MainFrame(self, width = app_width, height = app_height)
         self.main_frame.grid(row = 0, column = 0, sticky = "nsew")
 
+<<<<<<< HEAD
+=======
+        # Initialize mixer from Pygame.
+        mixer.init()
+
+>>>>>>> parent of cf097e8 (xDF)
 if __name__ == '__main__':
     app = MusicPlayer()
 >>>>>>> parent of 93539e2 (fixed)
