@@ -74,10 +74,10 @@ class MainFrame(ctk.CTkFrame):
         height = 50
 
         # Buttons icons.
-        #play_icon_path = "musicplayer/icons/play.png"
-        #pause_icon_path = "musicplayer/icons/pause.png"
-        #play_icon = ctk.CTkImage(light_image = Image.open(play_icon_path), dark_image = Image.open(play_icon_path), size = (20, 20))
-        #pause_icon = ctk.CTkImage(light_image = Image.open(pause_icon_path), dark_image = Image.open(pause_icon_path), size = (20, 20))
+        play_icon_path = "musicplayer/icons/play.png"
+        pause_icon_path = "musicplayer/icons/pause.png"
+        play_icon = ctk.CTkImage(light_image = Image.open(play_icon_path), dark_image = Image.open(play_icon_path), size = (20, 20))
+        pause_icon = ctk.CTkImage(light_image = Image.open(pause_icon_path), dark_image = Image.open(pause_icon_path), size = (20, 20))
 
         # Control Buttons frame.
         self.buttons_frame = DrawFrame(self, width= width, height = height, fg_color = grey_one)
@@ -101,7 +101,7 @@ class MainFrame(ctk.CTkFrame):
             text = "",
             fg_color = purple_one,
             hover_color = hover_color,
-            # image = play_icon,
+            image = play_icon,
             command = self.unpause_music
             )
         self.unpause_btn.grid(row = 0, column = 1, padx = 5, pady = 5)
@@ -113,7 +113,7 @@ class MainFrame(ctk.CTkFrame):
             text = "",
             fg_color = purple_one,
             hover_color = hover_color,
-            # image = pause_icon,
+            image = pause_icon,
             command = self.pause_music
             )
         self.pause_btn.grid(row = 0, column = 2, padx = 5, pady = 5)
