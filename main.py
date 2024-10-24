@@ -21,6 +21,23 @@ class MainFrame(ctk.CTkFrame):
         self.music_list()
         self.app_title()
 
+    def add_music(self): # precisa ser terminado, modificado para adionar a musica no scrollable frame.
+        try:
+            folder = filedialog.askdirectory(title = "Select your music folder.")
+            files = os.listdir(folder)
+
+            for music in files:
+                if music.lower().endswith(audio_extensions):
+                    if os.path.join(folder, music) in playlist:
+                        print("this song was just added.")
+                        return
+                    else:
+                        playlist.insert(tk.END, os.path.basename(music))
+                        playlist_path.append(os.path.join(folder, music))
+
+        except Exception as error:
+            print(error)
+
     def control_buttons(self):
         # Configure Control Buttons.
         width = app_width - 40
@@ -42,7 +59,7 @@ class MainFrame(ctk.CTkFrame):
         fg_color = '#3d3d3d'
 
         # Music list, scrollable frame.
-        self.music_list_frame = DrawScrollableFrame(self, width = width, height = height, fg_color = fg_color, command = self.button_events, music_list = playlist_path)
+        self.music_list_frame = DrawScrollableFrame(self, width = width, height = height, fg_color = fg_color)
         self.music_list_frame.grid(row = 1, column = 0, padx = 5, pady = 5, sticky = 'nsew')
 
     def app_title(self):
@@ -142,4 +159,14 @@ class MusicPlayer(ctk.CTk):
         # Configure the grid for main layout of window.
         self.grid_columnconfigure(0, weight = 1)
         self.grid_rowconfigure(0, weight = 1)
+<<<<<<< HEAD
+=======
+
+        # Main frame to group all frames.
+        self.main_frame = MainFrame(self, width = app_width, height = app_height)
+        self.main_frame.grid(row = 0, column = 0, sticky = "nsew")
+
+if __name__ == '__main__':
+    app = MusicPlayer()
+>>>>>>> parent of 93539e2 (fixed)
     app.mainloop()
