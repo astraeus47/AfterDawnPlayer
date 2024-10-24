@@ -1,11 +1,30 @@
 from src.ui_elements import *
 
 app_width = 620 # window width
-app_height = 300 # window height
+app_height = 320 # window height
+
 
 audio_extensions = (".mp3", ".wav", ".flac", ".ogg", ".aac", ".wma", ".m4a", ".aiff")
 playlist = []
-playlist_path = []
+
+
+class MusicPlayer(ctk.CTk):
+    def __init__(self):
+        super().__init__()
+        self.title(" After Dawn Music Player")
+        self.geometry(f'{app_width}x{app_height}')
+        self.resizable(False, False)
+
+        # Configure the grid for main layout of window.
+        self.grid_columnconfigure(0, weight = 1)
+        self.grid_rowconfigure(0, weight = 1)
+
+        # Main frame to group all frames.
+        self.main_frame = MainFrame(self, width = app_width, height = app_height)
+        self.main_frame.grid(row = 0, column = 0, sticky = 'nsew')
+
+        # Initialize Pygame mixer.
+        mixer.init()
 
 
 class MainFrame(ctk.CTkFrame):
@@ -13,55 +32,26 @@ class MainFrame(ctk.CTkFrame):
         super().__init__(master, width = width, height = height, fg_color = '#232323')
 
         # Configure the grid for MainFrame layout.
-        self.grid_columnconfigure(0, weight  = 1)
-        self.grid_rowconfigure(0, weight = 1)
+        self.grid_columnconfigure(1, weight  = 1)
+        self.grid_rowconfigure(1, weight = 1)
 
+        self.app_title()
         self.control_buttons()
         self.music_list()
-        self.app_title()
-
-
-    def control_buttons(self):
-        # Configure Control Buttons.
-        width = app_width - 40
-        height = 40
-        fg_color = '#0078ff'
-
-        # Control Buttons frame.
-        self.buttons_frame = DrawFrame(self, width= width, height = height, fg_color = fg_color)
-        self.buttons_frame.grid(row = 2, column = 0, padx = 5, pady = 5, sticky = 'nsew')
-
-        # Pause music button.
-        self.pause_btn = DrawButton(self.buttons_frame, text = "Pause Music", command = self.pause_music)
-        self.pause_btn.grid(row = 0, column = 1, padx = 5, pady = 5)
-
-        # Add music button.
-        self.add_music_btn = DrawButton(self.buttons_frame, text = "Add Music", command = self.add_music)
-        self.add_music_btn.grid(row = 0, column = 0, padx = 5, pady = 5)
-
-
-    def music_list(self):
-        # Configure Music List.
-        width = app_width - 40
-        height = 60
-        fg_color = '#3d3d3d'
-
-        # Music list, scrollable frame.
-        self.music_list_frame = DrawScrollableFrame(self, width = width, height = height, fg_color = fg_color, label_anchor = 's', command = self.button_events, music_list = playlist)
-        self.music_list_frame.grid(row = 1, column = 0, padx = 5, pady = 5, sticky = 'nsew')
-
+        #self.music_progress_bar()
 
     def app_title(self):
         # Configure Title:
         text = "After Dawn Music Player"
         width = app_width
-        height = 40
-        fg_color = '#0078ff'
+        height = 20
+        fg_color = '#8300ff'
+        corner_radius = 0
         text_fg_color = 'transparent'
         font = ('Impact', 30)
 
         # Title frame.
-        self.title_frame = DrawFrame(self, width = width, height = height, fg_color = fg_color, corner_radius = corner_radius)
+        self.title_frame = DrawFrame(self, width = width, height = height, fg_color = fg_color)
         self.title_frame.grid(row = 0, column = 0, sticky = 'nsew')
 
         # Title text label.
@@ -76,8 +66,98 @@ class MainFrame(ctk.CTkFrame):
         self.title_label.grid(row = 0, column = 0)
 
 
-    def pause_music(self):
-        mixer.music.pause()
+    def music_list(self):
+        # Configure Music List.
+        width = app_width - 40
+        height = 60
+        fg_color = '#2a2a2a'
+
+        # Music list, scrollable frame.
+        self.music_list_frame = DrawScrollableFrame(self, width = width, height = height, fg_color = fg_color, label_anchor = 's', command = self.button_events, music_list = playlist)
+        self.music_list_frame.grid(row = 1, column = 0, padx = 5, pady = 5, sticky = 'nsew')
+
+
+    def control_buttons(self):
+        # Configure Control Buttons.
+        width = app_width - 40
+        height = 50
+        fg_color = '#2a2a2a'
+
+        # Buttons icons.
+        play_icon_path = "musicplayer/icons/play.png"
+        pause_icon_path = "musicplayer/icons/pause.png"
+        play_icon = ctk.CTkImage(light_image = Image.open(play_icon_path), dark_image = Image.open(play_icon_path), size = (20, 20))
+        pause_icon = ctk.CTkImage(light_image = Image.open(pause_icon_path), dark_image = Image.open(pause_icon_path), size = (20, 20))
+
+        # Control Buttons frame.
+        self.buttons_frame = DrawFrame(self, width= width, height = height, fg_color = fg_color)
+        self.buttons_frame.grid(row = 1, column = 0, padx = 5, pady = 5, sticky = 'nsew')
+
+        # Add music button.
+        self.add_music_btn = DrawButton(
+            self.buttons_frame,
+            text = "Add",
+            fg_color = '#8300ff',
+            hover_color = '#008fff',
+            command = self.add_music
+            )
+        self.add_music_btn.grid(row = 0, column = 0, padx = 5, pady = 5)
+
+        # Unpause music button.
+        self.unpause_btn = DrawButton(
+            self.buttons_frame,
+            width = 10,
+            text = "",
+            fg_color = '#8300ff',
+            hover_color = '#008fff',
+            image = play_icon,
+            command = self.unpause_music
+            )
+        self.unpause_btn.grid(row = 0, column = 1, padx = 5, pady = 5)
+
+        # Pause music button.
+        self.pause_btn = DrawButton(
+            self.buttons_frame,
+            width = 10,
+            text = "",
+            fg_color = '#8300ff',
+            hover_color = '#008fff',
+            image = pause_icon,
+            command = self.pause_music
+            )
+        self.pause_btn.grid(row = 0, column = 2, padx = 5, pady = 5)
+
+        # Remove all music button.
+        self.remove_all_btn = DrawButton(
+            self.buttons_frame,
+            text = "Remove All",
+            fg_color = '#8300ff',
+            hover_color = '#008fff',
+            command = self.remove_all
+            )
+        self.remove_all_btn.grid(row = 0, column = 3, padx = 5, pady = 5)
+
+        # Music volume slider.
+        self.volume_slider = ctk.CTkSlider(
+            self.buttons_frame,
+            from_= 0,
+            to = 100,
+            orientation = 'horizontal',
+            command = self.set_volume
+            )
+        self.volume_slider.set(50)
+        self.volume_slider.grid(row = 0, column = 4)
+
+
+    def music_list(self):
+        # Configure Music List.
+        width = app_width - 40
+        height = 80
+        fg_color = '#2a2a2a'
+
+        # Music list, scrollable frame.
+        self.music_list_frame = DrawScrollableFrame(self, width = width, height = height, fg_color = fg_color, label_anchor = 's', command = self.button_events, music_list = playlist)
+        self.music_list_frame.grid(row = 2, column = 0, padx = 5, pady = (0, 5), sticky = 'nsew')
 
 
     def add_music(self):
@@ -112,9 +192,8 @@ class MainFrame(ctk.CTkFrame):
         fg_color = '#3d3d3d'
 
         # Music list, scrollable frame.
-        self.music_list_frame = DrawScrollableFrame(self, width = width, height = height, fg_color = fg_color, command = self.button_events, music_list = playlist_path)
-        self.music_list_frame.grid(row = 1, column = 0, padx = 5, pady = 5, sticky = 'nsew')
-
+        self.music_list_frame = DrawScrollableFrame(self, width = width, height = height, fg_color = fg_color, command = self.button_events, music_list = playlist)
+        self.music_list_frame.grid(row = 2, column = 0, padx = 5, pady = 5)
 
     def button_events(self):
         print(f"radiobutton frame modified: {self.music_list_frame.get_checked_item()}")
@@ -144,24 +223,39 @@ class MusicPlayer(ctk.CTk):
         self.update_music_list()
         print("playlist cleaned successfully!")
 
-        # Initialize mixer from Pygame.
-=======
-        # Configure the grid for main layout of window.
-        self.grid_columnconfigure(0, weight = 1)
-        self.grid_rowconfigure(0, weight = 1)
-<<<<<<< HEAD
-=======
+    def music_progress_bar(self):
+        self.progress_bar = DrawProgressBar(self, orientation = 'horizontal')
+        self.progress_bar.grid(row = 3, column = 0)
 
-        # Main frame to group all frames.
-        self.main_frame = MainFrame(self, width = app_width, height = app_height)
-        self.main_frame.grid(row = 0, column = 0, sticky = "nsew")
+    def get_music_length(self):
+        filename = self.music_list_frame.get_checked_item()
+        extension = os.path.splitext(filename)[1].lower()
 
-<<<<<<< HEAD
-=======
-        # Initialize mixer from Pygame.
-        mixer.init()
+        try:
+            if extension == ".mp3":
+                audio = MP3(filename)
+                return audio.info.length
+            elif extension == ".flac":
+                audio = FLAC(filename)
+                return audio.info.length
+            elif extension == ".ogg":
+                audio = OggFileType(filename)
+                return audio.info.length
+            elif extension in (".m4a", ".aac"):
+                audio = MP4(filename)
+                return audio.info.length
+            elif extension == ".wav":
+                with contextlib.closing(wave.open(filename, 'r')) as f:
+                    frames = f.getnframes()
+                    rate = f.getframerate()
+                    return frames / float(rate)
+            else:
+                raise ValueError(f"Unsupported file type: {extension}")
+        except Exception as e:
+            print(f"Error getting length for {filename}: {e}")
+            return None
 
->>>>>>> parent of cf097e8 (xDF)
+
 if __name__ == '__main__':
     app = MusicPlayer()
 >>>>>>> parent of 93539e2 (fixed)
