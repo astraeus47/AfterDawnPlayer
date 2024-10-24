@@ -1,16 +1,7 @@
 from src.ui_elements import *
 
-<<<<<<< HEAD
 app_width = 620 # window width
 app_height = 300 # window height
-=======
-
-
-app_width = 620 # window width
-app_height = 300 # window height
-
-
->>>>>>> parent of fc01d3d (version-1.20)
 
 audio_extensions = (".mp3", ".wav", ".flac", ".ogg", ".aac", ".wma", ".m4a", ".aiff")
 playlist = []
@@ -25,79 +16,42 @@ class MainFrame(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight  = 1)
         self.grid_rowconfigure(0, weight = 1)
 
-<<<<<<< HEAD
         self.app_title()
-=======
->>>>>>> parent of fc01d3d (version-1.20)
         self.control_buttons()
         self.music_list()
         self.app_title()
 
-<<<<<<< HEAD
     def control_buttons(self):
         # Configure Control Buttons.
         width = app_width - 40
         height = 30
-=======
-
-    def control_buttons(self):
-        # Configure Control Buttons.
-        width = app_width - 40
-        height = 40
->>>>>>> parent of fc01d3d (version-1.20)
         fg_color = '#0078ff'
 
         # Control Buttons frame.
         self.buttons_frame = DrawFrame(self, width= width, height = height, fg_color = fg_color)
         self.buttons_frame.grid(row = 2, column = 0, padx = 5, pady = 5, sticky = 'nsew')
 
-<<<<<<< HEAD
         # Add music button.
         self.add_music_btn = DrawButton(self.buttons_frame, text = "Add Music", command = self.add_music)
         self.add_music_btn.grid(row = 0, column = 0, sticky = 'nsew')
-=======
-        # Pause music button.
-        self.pause_btn = DrawButton(self.buttons_frame, text = "Pause Music", command = self.pause_music)
-        self.pause_btn.grid(row = 0, column = 1, padx = 5, pady = 5)
-
-        # Add music button.
-        self.add_music_btn = DrawButton(self.buttons_frame, text = "Add Music", command = self.add_music)
-        self.add_music_btn.grid(row = 0, column = 0, padx = 5, pady = 5)
-
->>>>>>> parent of fc01d3d (version-1.20)
 
     def music_list(self):
         # Configure Music List.
         width = app_width - 40
-<<<<<<< HEAD
         height = 100
         fg_color = '#3d3d3d'
 
         # Music list, scrollable frame.
         self.music_list_frame = DrawScrollableFrame(self, width = width, height = height, fg_color = fg_color, command = self.button_events, music_list = playlist_path)
         self.music_list_frame.grid(row = 1, column = 0, padx = 5, pady = 5, sticky = 'nsew')
-=======
-        height = 60
-        fg_color = '#3d3d3d'
-
-        # Music list, scrollable frame.
-        self.music_list_frame = DrawScrollableFrame(self, width = width, height = height, fg_color = fg_color, label_anchor = 's', command = self.button_events, music_list = playlist)
-        self.music_list_frame.grid(row = 1, column = 0, padx = 5, pady = 5, sticky = 'nsew')
-
->>>>>>> parent of fc01d3d (version-1.20)
 
     def app_title(self):
         # Configure Title:
         text = "After Dawn Music Player"
         width = app_width
-<<<<<<< HEAD
         height = 20
         fg_color = '#8300ff'
         corner_radius = 0
-=======
-        height = 40
-        fg_color = '#0078ff'
->>>>>>> parent of fc01d3d (version-1.20)
         text_fg_color = 'transparent'
         font = ('Impact', 30)
 
@@ -116,14 +70,6 @@ class MainFrame(ctk.CTkFrame):
             )
         self.title_label.grid(row = 0, column = 0)
 
-<<<<<<< HEAD
-=======
-
-    def pause_music(self):
-        mixer.music.pause()
-
-
->>>>>>> parent of fc01d3d (version-1.20)
     def add_music(self):
         try:
             folder = filedialog.askdirectory(title = "Select your music folder.")
@@ -159,12 +105,9 @@ class MainFrame(ctk.CTkFrame):
         self.music_list_frame = DrawScrollableFrame(self, width = width, height = height, fg_color = fg_color, command = self.button_events, music_list = playlist_path)
         self.music_list_frame.grid(row = 1, column = 0, padx = 5, pady = 5, sticky = 'nsew')
 
-<<<<<<< HEAD
     def button_events(self):
         # Print select music.
         print(f"playing this music: {self.music_list_frame.get_checked_item()}")
-=======
->>>>>>> parent of fc01d3d (version-1.20)
 
     def button_events(self):
         print(f"radiobutton frame modified: {self.music_list_frame.get_checked_item()}")
@@ -175,10 +118,6 @@ class MainFrame(ctk.CTkFrame):
             mixer.music.load(playlist_path[index])
             mixer.music.play()
 
-<<<<<<< HEAD
-=======
-
->>>>>>> parent of fc01d3d (version-1.20)
 class MusicPlayer(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -190,7 +129,6 @@ class MusicPlayer(ctk.CTk):
     # Set music volume.
     def set_volume(self, volume):
         set_volume = int(volume) / 100
-        mixer.music.set_volume(set_volume)
 
     # Remove all music.
     def remove_all(self):
@@ -204,15 +142,4 @@ class MusicPlayer(ctk.CTk):
         # Configure the grid for main layout of window.
         self.grid_columnconfigure(0, weight = 1)
         self.grid_rowconfigure(0, weight = 1)
-
-        # Main frame to group all frames.
-        self.main_frame = MainFrame(self, width = app_width, height = app_height)
-        self.main_frame.grid(row = 0, column = 0, sticky = "nsew")
-
-        # Initialize Pygame mixer.
->>>>>>> parent of fc01d3d (version-1.20)
-        mixer.init()
-
-if __name__ == '__main__':
-    app = MusicPlayer()
     app.mainloop()
