@@ -1,5 +1,5 @@
 from src.ui_elements import *
-from config.settings import *
+from src.settings import *
 
 from pygame import mixer
 from tkinter import filedialog

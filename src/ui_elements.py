@@ -1,6 +1,6 @@
 import customtkinter as ctk
 import os
-from config.settings import *
+from src.settings import *
 
 class DrawFrame(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
