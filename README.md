@@ -1,7 +1,7 @@
 # After Dawn Music Player
 
 **Desenvolvedor**: 27prxblms @Xzhyan  
-**Versão**: 1.10.2  
+**Versão**: 1.0.2  
 **Idioma Padrão**: Inglês (US)  
 **Linguagem**: Python  
 
