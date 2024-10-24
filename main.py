@@ -1,8 +1,19 @@
 from src.ui_elements import *
+from pygame import mixer
+from tkinter import filedialog
+from PIL import Image
+
+# Imports to music files.
+from mutagen.mp3 import MP3
+from mutagen.flac import FLAC
+from mutagen.ogg import OggFileType
+from mutagen.mp4 import MP4
+import wave
+import contextlib
+
 
 app_width = 620 # window width
 app_height = 320 # window height
-
 
 audio_extensions = (".mp3", ".wav", ".flac", ".ogg", ".aac", ".wma", ".m4a", ".aiff")
 playlist = []
@@ -66,17 +77,6 @@ class MainFrame(ctk.CTkFrame):
         self.title_label.grid(row = 0, column = 0)
 
 
-    def music_list(self):
-        # Configure Music List.
-        width = app_width - 40
-        height = 60
-        fg_color = '#2a2a2a'
-
-        # Music list, scrollable frame.
-        self.music_list_frame = DrawScrollableFrame(self, width = width, height = height, fg_color = fg_color, label_anchor = 's', command = self.button_events, music_list = playlist)
-        self.music_list_frame.grid(row = 1, column = 0, padx = 5, pady = 5, sticky = 'nsew')
-
-
     def control_buttons(self):
         # Configure Control Buttons.
         width = app_width - 40
@@ -84,10 +84,10 @@ class MainFrame(ctk.CTkFrame):
         fg_color = '#2a2a2a'
 
         # Buttons icons.
-        play_icon_path = "musicplayer/icons/play.png"
-        pause_icon_path = "musicplayer/icons/pause.png"
-        play_icon = ctk.CTkImage(light_image = Image.open(play_icon_path), dark_image = Image.open(play_icon_path), size = (20, 20))
-        pause_icon = ctk.CTkImage(light_image = Image.open(pause_icon_path), dark_image = Image.open(pause_icon_path), size = (20, 20))
+        #play_icon_path = "musicplayer/icons/play.png"
+        #pause_icon_path = "musicplayer/icons/pause.png"
+        #play_icon = ctk.CTkImage(light_image = Image.open(play_icon_path), dark_image = Image.open(play_icon_path), size = (20, 20))
+        #pause_icon = ctk.CTkImage(light_image = Image.open(pause_icon_path), dark_image = Image.open(pause_icon_path), size = (20, 20))
 
         # Control Buttons frame.
         self.buttons_frame = DrawFrame(self, width= width, height = height, fg_color = fg_color)
@@ -110,7 +110,7 @@ class MainFrame(ctk.CTkFrame):
             text = "",
             fg_color = '#8300ff',
             hover_color = '#008fff',
-            image = play_icon,
+            # image = play_icon,
             command = self.unpause_music
             )
         self.unpause_btn.grid(row = 0, column = 1, padx = 5, pady = 5)
@@ -122,7 +122,7 @@ class MainFrame(ctk.CTkFrame):
             text = "",
             fg_color = '#8300ff',
             hover_color = '#008fff',
-            image = pause_icon,
+            # image = pause_icon,
             command = self.pause_music
             )
         self.pause_btn.grid(row = 0, column = 2, padx = 5, pady = 5)
@@ -171,9 +171,8 @@ class MainFrame(ctk.CTkFrame):
                         print("this song was just added.")
                         return
                     else:
-                        #playlist.insert(tk.END, os.path.basename(music))
-                        playlist_path.append(os.path.join(folder, music))
-                        print(playlist_path)
+                        playlist.append(os.path.join(folder, music))
+                        print(playlist)
 
             self.update_music_list()
 
@@ -188,30 +187,30 @@ class MainFrame(ctk.CTkFrame):
 
         # Configure Music List.
         width = app_width - 40
-        height = 100
+        height = 60
         fg_color = '#3d3d3d'
 
         # Music list, scrollable frame.
         self.music_list_frame = DrawScrollableFrame(self, width = width, height = height, fg_color = fg_color, command = self.button_events, music_list = playlist)
         self.music_list_frame.grid(row = 2, column = 0, padx = 5, pady = 5)
 
+    # Based on the checked item, music is played.
     def button_events(self):
         print(f"radiobutton frame modified: {self.music_list_frame.get_checked_item()}")
         music_name = self.music_list_frame.get_checked_item()
-        if music_name in playlist_path:
-            index = playlist_path.index(music_name)
-            # return self.music_path[index]
-            mixer.music.load(playlist_path[index])
+        if music_name in playlist:
+            index = playlist.index(music_name)
+            mixer.music.load(playlist[index])
             mixer.music.play()
 
-class MusicPlayer(ctk.CTk):
-    def __init__(self):
-        super().__init__()
-        self.title(" After Dawn Music Player")
-        self.geometry(f'{app_width}x{app_height}')
-        self.resizable(False, False)
+    # Pause current music.
+    def pause_music(self):
+        mixer.music.pause()
 
-<<<<<<< HEAD
+    # Unpause current music.
+    def unpause_music(self):
+        mixer.music.unpause()
+
     # Set music volume.
     def set_volume(self, volume):
         set_volume = int(volume) / 100
@@ -258,5 +257,4 @@ class MusicPlayer(ctk.CTk):
 
 if __name__ == '__main__':
     app = MusicPlayer()
->>>>>>> parent of 93539e2 (fixed)
     app.mainloop()
