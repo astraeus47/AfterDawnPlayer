@@ -1,4 +1,6 @@
+# After Dawn Music Player
 
+# Configure:
 
 app_width = 620
 app_height = 320
@@ -15,7 +17,7 @@ hover_button = '#0244c0'
 item_list = '#151414'
 
 # Text scheme:
-title_font = ('Impact', 30)
-text_font = ('Arial', 18)
-button_font = ('Arial', 18)
+title_font = ('Doctor Glitch', 30)
+text_font = ('Comic Sans MS', 14)
+button_font = ('Comic Sans MS', 14)
 text_fg_color = 'transparent'

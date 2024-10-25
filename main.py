@@ -49,7 +49,7 @@ class MainFrame(ctk.CTkFrame):
         # Configure Title:
         text = "After Dawn Music Player"
         width = app_width
-        height = 20
+        height = 46
         corner_radius = 0
 
         # Title frame.
@@ -65,13 +65,13 @@ class MainFrame(ctk.CTkFrame):
             fg_color = text_fg_color,
             font = title_font
             )
-        self.title_label.grid(row = 0, column = 0)
+        self.title_label.grid(row = 0, column = 0, pady = (2, 0))
 
 
     def control_buttons(self):
         # Configure Control Buttons.
         width = app_width - 40
-        height = 50
+        height = 20
 
         # Buttons icons.
         play_icon_path = "musicplayer/icons/play.png"
