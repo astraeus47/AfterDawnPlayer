@@ -92,7 +92,7 @@ class MainFrame(ctk.CTkFrame):
             hover_color = hover_button,
             command = self.add_music
             )
-        self.add_music_btn.grid(row = 0, column = 0, padx = 5, pady = 5)
+        self.add_music_btn.grid(row = 0, column = 0, padx = 5, pady = 8)
 
         # Unpause music button.
         self.unpause_btn = DrawButton(
@@ -104,7 +104,7 @@ class MainFrame(ctk.CTkFrame):
             image = play_icon,
             command = self.unpause_music
             )
-        self.unpause_btn.grid(row = 0, column = 1, padx = 5, pady = 5)
+        self.unpause_btn.grid(row = 0, column = 1, padx = 5, pady = 8)
 
         # Pause music button.
         self.pause_btn = DrawButton(
@@ -116,7 +116,7 @@ class MainFrame(ctk.CTkFrame):
             image = pause_icon,
             command = self.pause_music
             )
-        self.pause_btn.grid(row = 0, column = 2, padx = 5, pady = 5)
+        self.pause_btn.grid(row = 0, column = 2, padx = 5, pady = 8)
 
         # Remove all music button.
         self.remove_all_btn = DrawButton(
@@ -127,7 +127,7 @@ class MainFrame(ctk.CTkFrame):
             hover_color = hover_button,
             command = self.remove_all
             )
-        self.remove_all_btn.grid(row = 0, column = 3, padx = 5, pady = 5)
+        self.remove_all_btn.grid(row = 0, column = 3, padx = 5, pady = 8)
 
         # Music volume slider.
         self.volume_slider = ctk.CTkSlider(
@@ -137,8 +137,8 @@ class MainFrame(ctk.CTkFrame):
             orientation = 'horizontal',
             command = self.set_volume
             )
-        self.volume_slider.set(50)
-        self.volume_slider.grid(row = 0, column = 4)
+        self.volume_slider.set(100)
+        self.volume_slider.grid(row = 0, column = 4, padx = 5, pady = 8)
 
 
     def music_list(self):
