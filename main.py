@@ -100,7 +100,7 @@ class MainFrame(ctk.CTkFrame):
             width = 10,
             text = "",
             fg_color = purple_one,
-            hover_color = hover_color,
+            hover_color = hover_button,
             image = play_icon,
             command = self.unpause_music
             )
@@ -112,7 +112,7 @@ class MainFrame(ctk.CTkFrame):
             width = 10,
             text = "",
             fg_color = purple_one,
-            hover_color = hover_color,
+            hover_color = hover_button,
             image = pause_icon,
             command = self.pause_music
             )
