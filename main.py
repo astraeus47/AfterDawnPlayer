@@ -1,17 +1,13 @@
 from src.ui_elements import *
+from src.top_levels import *
+from src.functions import *
 from src.settings import *
 
 from pygame import mixer
-from tkinter import filedialog
 from PIL import Image
 
-# Imports to music files.
-from mutagen.mp3 import MP3
-from mutagen.flac import FLAC
-from mutagen.ogg import OggFileType
-from mutagen.mp4 import MP4
-import wave
-import contextlib
+
+
 
 class MusicPlayer(ctk.CTk):
     def __init__(self):
@@ -42,6 +38,7 @@ class MainFrame(ctk.CTkFrame):
 
         self.app_title()
         self.control_buttons()
+
         #self.music_list()
         #self.music_progress_bar()
 
@@ -73,15 +70,15 @@ class MainFrame(ctk.CTkFrame):
         width = app_width - 40
         height = 20
 
-        # Buttons icons.
+        # Button icons.
         play_icon_path = "musicplayer/icons/play.png"
         pause_icon_path = "musicplayer/icons/pause.png"
-        play_icon = ctk.CTkImage(light_image = Image.open(play_icon_path), dark_image = Image.open(play_icon_path), size = (20, 20))
-        pause_icon = ctk.CTkImage(light_image = Image.open(pause_icon_path), dark_image = Image.open(pause_icon_path), size = (20, 20))
+        self.play_icon = ctk.CTkImage(light_image = Image.open(play_icon_path), dark_image = Image.open(play_icon_path), size = (20, 20))
+        self.pause_icon = ctk.CTkImage(light_image = Image.open(pause_icon_path), dark_image = Image.open(pause_icon_path), size = (20, 20))
 
         # Control Buttons frame.
         self.buttons_frame = DrawFrame(self, width= width, height = height, fg_color = grey_one)
-        self.buttons_frame.grid(row = 1, column = 0, padx = 5, pady = 5, sticky = 'nsew')
+        self.buttons_frame.grid(row = 1, column = 0, padx = 5, pady = 5, sticky = 'new')
 
         # Add music button.
         self.add_music_btn = DrawButton(
@@ -94,29 +91,18 @@ class MainFrame(ctk.CTkFrame):
             )
         self.add_music_btn.grid(row = 0, column = 0, padx = 5, pady = 8)
 
-        # Unpause music button.
-        self.unpause_btn = DrawButton(
+        # Unpause and unpause music button.
+        self.pause_and_unpause = DrawButton(
             self.buttons_frame,
             width = 10,
             text = "",
             fg_color = purple_one,
             hover_color = hover_button,
-            image = play_icon,
-            command = self.unpause_music
-            )
-        self.unpause_btn.grid(row = 0, column = 1, padx = 5, pady = 8)
-
-        # Pause music button.
-        self.pause_btn = DrawButton(
-            self.buttons_frame,
-            width = 10,
-            text = "",
-            fg_color = purple_one,
-            hover_color = hover_button,
-            image = pause_icon,
+            image = self.play_icon,
             command = self.pause_music
             )
-        self.pause_btn.grid(row = 0, column = 2, padx = 5, pady = 8)
+        self.pause_and_unpause.grid(row = 0, column = 1, padx = 5, pady = 8)
+
 
         # Remove all music button.
         self.remove_all_btn = DrawButton(
@@ -134,10 +120,13 @@ class MainFrame(ctk.CTkFrame):
             self.buttons_frame,
             from_= 0,
             to = 100,
+            progress_color = blue_one,
+            button_color = purple_one,
+            button_hover_color = hover_button,
             orientation = 'horizontal',
             command = self.set_volume
             )
-        self.volume_slider.set(100)
+        self.volume_slider.set(50)
         self.volume_slider.grid(row = 0, column = 4, padx = 5, pady = 8)
 
 
@@ -152,97 +141,60 @@ class MainFrame(ctk.CTkFrame):
 
 
     def add_music(self):
-        try:
-            folder = filedialog.askdirectory(title = "Select your music folder.")
-            files = os.listdir(folder)
+        loaded = load_music_files()
+        if loaded == True:
+            self.music_list()
 
-            for music in files:
-                if music.lower().endswith(audio_extensions):
-                    if os.path.join(folder, music) in playlist:
-                        print("this song was just added.")
-                        return
-                    else:
-                        playlist.append(os.path.join(folder, music))
-                        print(playlist)
-
-            self.update_music_list()
-
-        except Exception as error:
-            print(error)
-
-
-    def update_music_list(self):
-        # Configure Music List.
-        width = app_width - 40
-        height = 60
-        
-        self.music_list()
-
-        # Music list, scrollable frame.
-        # self.music_list_frame = DrawScrollableFrame(self, width = width, height = height, fg_color = fg_color, command = self.button_events, music_list = playlist)
-        # self.music_list_frame.grid(row = 2, column = 0, padx = 5, pady = 5)
 
     # Based on the checked item, music is played.
     def button_events(self):
-        print(f"radiobutton frame modified: {self.music_list_frame.get_checked_item()}")
+        print(f"playing this song: {self.music_list_frame.get_checked_item()}")
+
+        self.pause_and_unpause.configure(image = self.pause_icon, command = self.pause_music)
+
         music_name = self.music_list_frame.get_checked_item()
+
         if music_name in playlist:
             index = playlist.index(music_name)
             mixer.music.load(playlist[index])
             mixer.music.play()
 
+
     # Pause current music.
     def pause_music(self):
         mixer.music.pause()
+        self.pause_and_unpause.configure(image = self.play_icon, command = self.unpause_music)
+
 
     # Unpause current music.
     def unpause_music(self):
         mixer.music.unpause()
+        self.pause_and_unpause.configure(image = self.pause_icon, command = self.pause_music)
+
 
     # Set music volume.
     def set_volume(self, volume):
         music_volume = int(volume) / 100
         mixer.music.set_volume(music_volume)
 
+
     # Remove all music.
     def remove_all(self):
         mixer.music.stop()
         playlist.clear()
-        self.update_music_list()
+        self.music_list()
+        self.pause_and_unpause.configure(image = self.play_icon, command = self.unpause_music)
         print("playlist cleaned successfully!")
+
 
     def music_progress_bar(self):
         self.progress_bar = DrawProgressBar(self, orientation = 'horizontal')
         self.progress_bar.grid(row = 3, column = 0)
 
-    def get_music_length(self):
-        filename = self.music_list_frame.get_checked_item()
-        extension = os.path.splitext(filename)[1].lower()
 
-        try:
-            if extension == ".mp3":
-                audio = MP3(filename)
-                return audio.info.length
-            elif extension == ".flac":
-                audio = FLAC(filename)
-                return audio.info.length
-            elif extension == ".ogg":
-                audio = OggFileType(filename)
-                return audio.info.length
-            elif extension in (".m4a", ".aac"):
-                audio = MP4(filename)
-                return audio.info.length
-            elif extension == ".wav":
-                with contextlib.closing(wave.open(filename, 'r')) as f:
-                    frames = f.getnframes()
-                    rate = f.getframerate()
-                    return frames / float(rate)
-            else:
-                raise ValueError(f"Unsupported file type: {extension}")
-
-        except Exception as e:
-            print(f"Error getting length for {filename}: {e}")
-            return None
+    # def get_music_length(self):
+    #     filename = self.music_list_frame.get_checked_item()
+    #     self.audio_lenght = check_audio_lenght(filename)
 
 
 if __name__ == '__main__':

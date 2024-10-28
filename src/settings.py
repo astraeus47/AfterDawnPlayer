@@ -15,6 +15,7 @@ purple_one = '#8300ff'
 hover_color = '#0ffa00'
 hover_button = '#0244c0'
 item_list = '#151414'
+blue_one = '#00e0ff'
 
 # Text scheme:
 title_font = ('Doctor Glitch', 30)
