@@ -22,3 +22,7 @@ title_font = ('Doctor Glitch', 30)
 text_font = ('Comic Sans MS', 14)
 button_font = ('Comic Sans MS', 14)
 text_fg_color = 'transparent'
+
+# Button icon images.
+play_icon_path = "musicplayer/icons/play.png"
+pause_icon_path = "musicplayer/icons/pause.png"
