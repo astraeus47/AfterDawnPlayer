@@ -1,7 +1,6 @@
 # After Dawn Music Player
 
 # Configure:
-
 app_width = 620
 app_height = 320
 
@@ -24,5 +23,9 @@ button_font = ('Comic Sans MS', 14)
 text_fg_color = 'transparent'
 
 # Button icon images.
+add_icon_path = "musicplayer/icons/add.png"
 play_icon_path = "musicplayer/icons/play.png"
 pause_icon_path = "musicplayer/icons/pause.png"
+next_icon_path = "musicplayer/icons/next.png"
+return_icon_path = "musicplayer/icons/return.png"
+remove_icon_path = "musicplayer/icons/remove.png"

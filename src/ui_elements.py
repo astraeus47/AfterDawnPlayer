@@ -38,6 +38,9 @@ class DrawScrollableFrame(ctk.CTkScrollableFrame):
 
     def get_checked_item(self):
         return self.radio_button_var.get()
+    
+    def set_checked_item(self, index):
+        self.radio_button_list[index].select()
 
 
 class DrawRadioButton(ctk.CTkRadioButton):

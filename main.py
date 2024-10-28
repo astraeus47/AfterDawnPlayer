@@ -68,61 +68,88 @@ class MainFrame(ctk.CTkFrame):
         width = app_width - 40
         height = 42
 
-        # Button icons.
-        self.play_icon = ctk.CTkImage(light_image = Image.open(play_icon_path), dark_image = Image.open(play_icon_path), size = (20, 20))
-        self.pause_icon = ctk.CTkImage(light_image = Image.open(pause_icon_path), dark_image = Image.open(pause_icon_path), size = (20, 20))
-
         # Control Buttons frame.
         self.buttons_frame = DrawFrame(self, width= width, height = height, fg_color = grey_one)
         self.buttons_frame.grid(row = 1, column = 0, padx = 5, pady = 5, sticky = 'new')
 
+        # X position.
+        width_btn = 10
+        y_btn = 7
+        x_add_btn = 8
+        x_return_btn = x_add_btn + (width_btn * 5) - x_add_btn
+        x_pause_unpause_btn = x_return_btn + (width_btn * 5) - x_add_btn
+        x_next_btn = x_pause_unpause_btn + (width_btn * 5) - x_add_btn
+        x_remove_btn = x_next_btn + (width_btn * 5) - x_add_btn
+
+        # Button
+        self.add_icon = ctk.CTkImage(light_image = Image.open(add_icon_path), dark_image = Image.open(add_icon_path), size = (20, 20))
+        self.play_icon = ctk.CTkImage(light_image = Image.open(play_icon_path), dark_image = Image.open(play_icon_path), size = (20, 20))
+        self.pause_icon = ctk.CTkImage(light_image = Image.open(pause_icon_path), dark_image = Image.open(pause_icon_path), size = (20, 20))
+        self.next_icon = ctk.CTkImage(light_image = Image.open(next_icon_path), dark_image = Image.open(next_icon_path), size = (20, 20))
+        self.return_icon = ctk.CTkImage(light_image = Image.open(return_icon_path), dark_image = Image.open(return_icon_path), size = (20, 20))
+        self.remove_icon = ctk.CTkImage(light_image = Image.open(remove_icon_path), dark_image = Image.open(remove_icon_path), size = (20, 20))
+
         # Add music button.
         self.add_music_btn = DrawButton(
             self.buttons_frame,
-            width = 10,
-            text = "Add",
+            width = width_btn,
+            text = "",
             font = button_font,
             fg_color = purple_one,
             hover_color = hover_button,
+            image = self.add_icon,
             command = self.add_music
             )
-        self.add_music_btn.place(x = 6, y = 6)
+        self.add_music_btn.place(x = x_add_btn, y = y_btn)
+
+        # Back song.
+        self.return_music_btn = DrawButton(
+            self.buttons_frame,
+            width = width_btn,
+            text = "",
+            fg_color = purple_one,
+            hover_color = hover_button,
+            image = self.return_icon,
+            command = self.play_return_music
+            )
+        self.return_music_btn.place(x = x_return_btn, y = y_btn)
 
         # Unpause and unpause music button.
         self.pause_and_unpause = DrawButton(
             self.buttons_frame,
-            width = 10,
+            width = width_btn,
             text = "",
             fg_color = purple_one,
             hover_color = hover_button,
             image = self.play_icon,
             command = self.pause_music
             )
-        self.pause_and_unpause.place(x = 54, y = 6)
+        self.pause_and_unpause.place(x = x_pause_unpause_btn, y = y_btn)
 
         # Next song.
         self.next_music_btn = DrawButton(
             self.buttons_frame,
-            width = 10,
+            width = width_btn,
             text = "",
             fg_color = purple_one,
             hover_color = hover_button,
-            image = self.play_icon,
+            image = self.next_icon,
             command = self.play_next_music
             )
-        self.next_music_btn.place(x = 202, y = 6)
-
+        self.next_music_btn.place(x = x_next_btn, y = y_btn)
 
         # Remove all music button.
         self.remove_all_btn = DrawButton(
             self.buttons_frame,
-            text = "Remove All",
+            width = width_btn,
+            text = "",
             font = button_font,
             fg_color = purple_one,
             hover_color = hover_button,
+            image = self.remove_icon,
             command = self.remove_all
             )
-        self.remove_all_btn.place(x = 242, y = 6)
+        self.remove_all_btn.place(x = x_remove_btn, y = y_btn)
 
         # Music volume slider.
         self.volume_slider = ctk.CTkSlider(
@@ -136,7 +163,7 @@ class MainFrame(ctk.CTkFrame):
             command = self.set_volume
             )
         self.volume_slider.set(50)
-        self.volume_slider.place(x = 380, y = 12)
+        self.volume_slider.place(x = 400, y = 12)
 
 
     def music_list(self):
@@ -157,38 +184,43 @@ class MainFrame(ctk.CTkFrame):
 
     # Based on the checked item, music is played.
     def play_checked_music(self):
-        # print(f"playing this song: {self.music_list_frame.get_checked_item()}")
-
         music_name = self.music_list_frame.get_checked_item()
-
         if music_name in playlist:
             index = playlist.index(music_name)
-
-            # show the music playing.
-            print(f"playing this song {music_name}")
-
             self.play_music(index)
 
+
     def play_next_music(self):
-        index = self.get_music_positon
-        self.play_music(index)
+        try:
+            index = self.get_music_positon
+            self.play_music(index)
+        except:
+            print("no songs in playlist")
+
+
+    def play_return_music(self):
+        try:
+            index = self.get_music_positon - 2
+            self.play_music(index)
+        except:
+            print("no songs in playlist")
+
 
     # Play music.
     def play_music(self, index):
         # change the button icon.
         self.pause_and_unpause.configure(image = self.pause_icon, command = self.pause_music)
 
-        # if music_name in playlist:
-        #     index = playlist.index(music_name)
-
-        #     # show the music playing.
-        #     print(f"playing this song {music_name}")
-
-            # will be used for next song and previous song button.
         self.get_music_positon = index + 1
+
+        music_name = playlist[index]
+        print(f"playing this song: {music_name}")
+
+        self.music_list_frame.set_checked_item(index)
 
         mixer.music.load(playlist[index])
         mixer.music.play()
+
 
     # Pause current music.
     def pause_music(self):
