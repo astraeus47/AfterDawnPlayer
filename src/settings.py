@@ -3,6 +3,7 @@
 # Configure:
 app_width = 620
 app_height = 320
+bg_img_path = "musicplayer/images/background.png"
 
 audio_extensions = (".mp3", ".wav", ".flac", ".ogg", ".aac", ".wma", ".m4a", ".aiff")
 playlist = []

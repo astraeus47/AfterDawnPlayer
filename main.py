@@ -51,6 +51,11 @@ class MainFrame(ctk.CTkFrame):
         self.title_frame = DrawFrame(self, width = width, height = height, fg_color = purple_one)
         self.title_frame.grid(row = 0, column = 0, sticky = 'nsew')
 
+        self.bg_image = ctk.CTkImage(light_image = Image.open(bg_img_path), dark_image = Image.open(bg_img_path), size = (app_width, height))
+
+        # self.bg_img_label = ctk.CTkLabel(self.title_frame, image = self.bg_image, text = "")
+        # self.bg_img_label.grid(row = 0, column = 0, sticky = 'nsew')
+
         # Title text label.
         self.title_label = DrawLabel(
             self.title_frame,
@@ -58,9 +63,10 @@ class MainFrame(ctk.CTkFrame):
             width = width,
             height = height,
             fg_color = text_fg_color,
-            font = title_font
+            font = title_font,
+            image = self.bg_image
             )
-        self.title_label.grid(row = 0, column = 0, pady = (2, 0))
+        self.title_label.grid(row = 0, column = 0, pady = 2)
 
 
     def control_buttons(self):
@@ -72,7 +78,7 @@ class MainFrame(ctk.CTkFrame):
         self.buttons_frame = DrawFrame(self, width= width, height = height, fg_color = grey_one)
         self.buttons_frame.grid(row = 1, column = 0, padx = 5, pady = 5, sticky = 'new')
 
-        # X position.
+        # X position calc.
         width_btn = 10
         y_btn = 7
         x_add_btn = 8
