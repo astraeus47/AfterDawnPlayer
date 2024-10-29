@@ -1,6 +1,6 @@
 # After Dawn Music Player
 
-![After Dawn Music Player](https://i.ibb.co/kg9z4h7/image.png)
+![After Dawn Music Player](https://i.ibb.co/WH4jPHz/image.png)
 
 **Desenvolvedor**: 27prxblms @Xzhyan  
 **Versão**: 1.20
