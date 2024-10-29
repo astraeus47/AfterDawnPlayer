@@ -4,7 +4,7 @@
 
 **Desenvolvedor**: 27prxblms @Xzhyan  
 **Versão**: 1.20
-**Idioma Padrão**: Inglês (US)  
+**Idioma Padrão**: Inglês (US)
 **Linguagem**: Python  
 
 ## Sobre
