@@ -3,8 +3,8 @@
 ![After Dawn Music Player](https://i.ibb.co/WH4jPHz/image.png)
 
 **Desenvolvedor**: 27prxblms @Xzhyan  
-**Versão**: 1.20
-**Idioma Padrão**: Inglês (US)
+**Versão**: 1.20  
+**Idioma Padrão**: Inglês (US)  
 **Linguagem**: Python  
 
 ## Sobre
