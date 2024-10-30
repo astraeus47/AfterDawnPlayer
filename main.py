@@ -7,6 +7,7 @@ from src.settings import *
 # pyinstaller --noconfirm --onedir --windowed --add-data "C:\Development\Python\Python312\Lib\site-packages/customtkinter;customtkinter/"  "<Path to Python Script>"
 
 from pygame import mixer
+from pygame import time
 from PIL import Image
 
 
@@ -85,18 +86,23 @@ class MainFrame(ctk.CTkFrame):
         width_btn = 10
         y_btn = 7
         x_add_btn = 8
-        x_return_btn = x_add_btn + (width_btn * 5) - x_add_btn
+
+        x_remove_btn = x_add_btn + (width_btn * 5) - x_add_btn
+        x_return_btn = x_remove_btn + (width_btn * 5) - x_add_btn
         x_pause_unpause_btn = x_return_btn + (width_btn * 5) - x_add_btn
         x_next_btn = x_pause_unpause_btn + (width_btn * 5) - x_add_btn
-        x_remove_btn = x_next_btn + (width_btn * 5) - x_add_btn
+        x_repeat_btn = x_next_btn + (width_btn * 5) - x_add_btn
+        x_random_btn = x_repeat_btn + (width_btn * 5) - x_add_btn
 
         # Button
         self.add_icon = ctk.CTkImage(light_image = Image.open(add_icon_path), dark_image = Image.open(add_icon_path), size = (20, 20))
+        self.remove_icon = ctk.CTkImage(light_image = Image.open(remove_icon_path), dark_image = Image.open(remove_icon_path), size = (20, 20))
         self.play_icon = ctk.CTkImage(light_image = Image.open(play_icon_path), dark_image = Image.open(play_icon_path), size = (20, 20))
         self.pause_icon = ctk.CTkImage(light_image = Image.open(pause_icon_path), dark_image = Image.open(pause_icon_path), size = (20, 20))
         self.next_icon = ctk.CTkImage(light_image = Image.open(next_icon_path), dark_image = Image.open(next_icon_path), size = (20, 20))
         self.return_icon = ctk.CTkImage(light_image = Image.open(return_icon_path), dark_image = Image.open(return_icon_path), size = (20, 20))
-        self.remove_icon = ctk.CTkImage(light_image = Image.open(remove_icon_path), dark_image = Image.open(remove_icon_path), size = (20, 20))
+        self.repeat_icon = ctk.CTkImage(light_image = Image.open(repeat_icon_path), dark_image = Image.open(repeat_icon_path), size = (20, 20))
+        self.random_icon = ctk.CTkImage(light_image = Image.open(random_icon_path), dark_image = Image.open(random_icon_path), size = (20, 20))
 
         # Add music button.
         self.add_music_btn = DrawButton(
@@ -110,6 +116,19 @@ class MainFrame(ctk.CTkFrame):
             command = self.add_music
             )
         self.add_music_btn.place(x = x_add_btn, y = y_btn)
+
+        # Remove all music button.
+        self.remove_all_btn = DrawButton(
+            self.buttons_frame,
+            width = width_btn,
+            text = "",
+            font = button_font,
+            fg_color = purple_one,
+            hover_color = hover_button,
+            image = self.remove_icon,
+            command = self.remove_all
+            )
+        self.remove_all_btn.place(x = x_remove_btn, y = y_btn)
 
         # Back song.
         self.return_music_btn = DrawButton(
@@ -147,18 +166,29 @@ class MainFrame(ctk.CTkFrame):
             )
         self.next_music_btn.place(x = x_next_btn, y = y_btn)
 
-        # Remove all music button.
-        self.remove_all_btn = DrawButton(
-            self.buttons_frame,
-            width = width_btn,
-            text = "",
-            font = button_font,
-            fg_color = purple_one,
-            hover_color = hover_button,
-            image = self.remove_icon,
-            command = self.remove_all
-            )
-        self.remove_all_btn.place(x = x_remove_btn, y = y_btn)
+        # # Repeat song.
+        # self.repeat_music_btn = DrawButton(
+        #     self.buttons_frame,
+        #     width = width_btn,
+        #     text = "",
+        #     fg_color = purple_one,
+        #     hover_color = hover_button,
+        #     image = self.repeat_icon,
+        #     command = self.play_next_music
+        #     )
+        # self.repeat_music_btn.place(x = x_repeat_btn, y = y_btn)
+
+        # # Random song.
+        # self.random_music_btn = DrawButton(
+        #     self.buttons_frame,
+        #     width = width_btn,
+        #     text = "",
+        #     fg_color = purple_one,
+        #     hover_color = hover_button,
+        #     image = self.random_icon,
+        #     command = self.play_next_music
+        #     )
+        # self.random_music_btn.place(x = x_random_btn, y = y_btn)
 
         # Music volume slider.
         self.volume_slider = ctk.CTkSlider(
@@ -227,6 +257,9 @@ class MainFrame(ctk.CTkFrame):
 
         self.music_list_frame.set_checked_item(index)
 
+        # get_lenght = check_audio_lenght(music_name)
+        # self.music_progress(get_lenght)
+
         mixer.music.load(playlist[index])
         mixer.music.play()
 
@@ -262,10 +295,6 @@ class MainFrame(ctk.CTkFrame):
         self.progress_bar = DrawProgressBar(self, orientation = 'horizontal')
         self.progress_bar.grid(row = 3, column = 0)
 
-
-    # def get_music_length(self):
-    #     filename = self.music_list_frame.get_checked_item()
-    #     self.audio_lenght = check_audio_lenght(filename)
 
 
 if __name__ == '__main__':

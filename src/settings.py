@@ -25,8 +25,10 @@ text_fg_color = 'transparent'
 
 # Button icon images.
 add_icon_path = "musicplayer/icons/add.png"
+remove_icon_path = "musicplayer/icons/remove.png"
 play_icon_path = "musicplayer/icons/play.png"
 pause_icon_path = "musicplayer/icons/pause.png"
 next_icon_path = "musicplayer/icons/next.png"
 return_icon_path = "musicplayer/icons/return.png"
-remove_icon_path = "musicplayer/icons/remove.png"
+repeat_icon_path = "musicplayer/icons/repeat.png"
+random_icon_path = "musicplayer/icons/random.png"
