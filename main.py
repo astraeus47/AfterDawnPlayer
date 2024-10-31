@@ -6,7 +6,6 @@ from src.settings import *
 # pyinstaller command.
 # pyinstaller --noconfirm --onedir --windowed --add-data "C:\Development\Python\Python312\Lib\site-packages/customtkinter;customtkinter/"  "<Path to Python Script>"
 
-from pygame import mixer
 from pygame import time
 from PIL import Image
 
@@ -41,8 +40,6 @@ class MainFrame(ctk.CTkFrame):
         self.app_title()
         self.control_buttons()
 
-        #self.music_list()
-        #self.music_progress_bar()
 
     def app_title(self):
         # Configure Title:
@@ -77,6 +74,10 @@ class MainFrame(ctk.CTkFrame):
         # Configure Control Buttons.
         width = app_width - 40
         height = 42
+
+        # Repeat and Random mode.
+        self.repeat_enable = repeat_enable
+        self.random_enable = random_enable
 
         # Control Buttons frame.
         self.buttons_frame = DrawFrame(self, width= width, height = height, fg_color = grey_one)
@@ -166,29 +167,29 @@ class MainFrame(ctk.CTkFrame):
             )
         self.next_music_btn.place(x = x_next_btn, y = y_btn)
 
-        # # Repeat song.
-        # self.repeat_music_btn = DrawButton(
-        #     self.buttons_frame,
-        #     width = width_btn,
-        #     text = "",
-        #     fg_color = purple_one,
-        #     hover_color = hover_button,
-        #     image = self.repeat_icon,
-        #     command = self.play_next_music
-        #     )
-        # self.repeat_music_btn.place(x = x_repeat_btn, y = y_btn)
+        # Repeat song.
+        self.repeat_music_btn = DrawButton(
+            self.buttons_frame,
+            width = width_btn,
+            text = "",
+            fg_color = purple_one,
+            hover_color = hover_button,
+            image = self.repeat_icon,
+            command = self.repeat_mode_enable
+            )
+        self.repeat_music_btn.place(x = x_repeat_btn, y = y_btn)
 
-        # # Random song.
-        # self.random_music_btn = DrawButton(
-        #     self.buttons_frame,
-        #     width = width_btn,
-        #     text = "",
-        #     fg_color = purple_one,
-        #     hover_color = hover_button,
-        #     image = self.random_icon,
-        #     command = self.play_next_music
-        #     )
-        # self.random_music_btn.place(x = x_random_btn, y = y_btn)
+        # Random song.
+        self.random_music_btn = DrawButton(
+            self.buttons_frame,
+            width = width_btn,
+            text = "",
+            fg_color = purple_one,
+            hover_color = hover_button,
+            image = self.random_icon,
+            command = self.random_mode_enable
+            )
+        self.random_music_btn.place(x = x_random_btn, y = y_btn)
 
         # Music volume slider.
         self.volume_slider = ctk.CTkSlider(
@@ -258,10 +259,44 @@ class MainFrame(ctk.CTkFrame):
         self.music_list_frame.set_checked_item(index)
 
         # get_lenght = check_audio_lenght(music_name)
-        # self.music_progress(get_lenght)
 
-        mixer.music.load(playlist[index])
+        mixer.music.load(music_name)
         mixer.music.play()
+
+        if self.repeat_enable or self.random_enable:
+            self.repeat_or_random(index)
+    
+    def repeat_or_random(self, index):
+        get_busy = mixer.music.get_busy()
+        print(get_busy)
+        if not get_busy:
+
+            if self.repeat_enable:
+                self.play_music(index)
+
+            elif self.random_enable:
+                self.play_music(random.randint(0, len(self.playlist) - 1))
+
+            # if self.repeat_enable:
+            #     if get_music_progress >= 90.66:
+            #         self.play_music(self.current_index)
+
+            # if self.random_enable:
+            #     if get_music_progress >= 90.66:
+            #         self.play_music(random.randint(0, len(self.playlist) - 1))
+
+        self.after(1000, lambda: self.repeat_or_random(index))
+
+        # while True:
+        #     for event in pygame.event.get():
+        #         if event.type == USEREVENT:
+        #             if self.repeat_enable:
+        #                 self.play_music(self.current_index)
+        #             elif self.random_enable:
+        #                 self.play_music(random.randint(0, len(self.playlist) - 1))
+        #             else:
+        #                 self.next_music()
+        #             break
 
 
     # Pause current music.
@@ -284,17 +319,41 @@ class MainFrame(ctk.CTkFrame):
 
     # Remove all music.
     def remove_all(self):
-        mixer.music.stop()
-        playlist.clear()
-        self.music_list()
-        self.pause_and_unpause.configure(image = self.play_icon, command = self.unpause_music)
-        print("playlist cleaned successfully!")
+        if not playlist:
+            print("this playlist is empty!")
+            return
+        else:
+            mixer.music.stop()
+            playlist.clear()
+            self.music_list()
+            self.pause_and_unpause.configure(image = self.play_icon, command = self.unpause_music)
+            print("playlist cleaned successfully!")
 
+    
+    # Repeat mode.
+    def repeat_mode_enable(self):
+        if self.repeat_enable == False:
+            self.repeat_enable = True
+            self.random_enable = False
+        else:
+            return
+    
+    # Random mode.
+    def random_mode_enable(self):
+        if self.random_enable == False:
+            self.random_enable = True
+            self.repeat_enable = False
+        else:
+            return
+        
 
-    def music_progress_bar(self):
-        self.progress_bar = DrawProgressBar(self, orientation = 'horizontal')
-        self.progress_bar.grid(row = 3, column = 0)
-
+    def music_progress(self, get_lenght):
+        if mixer.music.get_busy():
+            current_time = mixer.music.get_pos() / 1000
+            progress = (current_time / get_lenght) * 100
+            set_progress = round(progress, 2)
+            self.after(1000, lambda: self.music_progress(get_lenght))
+            return set_progress
 
 
 if __name__ == '__main__':

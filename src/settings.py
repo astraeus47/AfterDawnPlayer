@@ -7,6 +7,8 @@ bg_img_path = "musicplayer/images/background.png"
 
 audio_extensions = (".mp3", ".wav", ".flac", ".ogg", ".aac", ".wma", ".m4a", ".aiff")
 playlist = []
+repeat_enable = True
+random_enable = False
 
 # Color scheme:
 dark_one = '#0f0f0f'

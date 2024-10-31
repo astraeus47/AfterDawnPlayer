@@ -1,6 +1,7 @@
 from src.settings import audio_extensions, playlist
 from tkinter import filedialog
-import os
+from pygame import mixer
+import os, random
 
 # Imports to music files.
 from mutagen.mp3 import MP3
@@ -64,10 +65,10 @@ def check_audio_lenght(music_name):
     except Exception as e:
         print(f"Error getting length for {music_name}: {e}")
         return None
-
-    # def music_progress(self, get_lenght):
-    #     if mixer.music.get_busy():
-    #         current_time = mixer.music.get_pos() / 1000
-    #         progress = (current_time / get_lenght) * 100
-    #         print(f"Progress: {progress:.2f}%")
-    #         self.after(1000, lambda: self.music_progress(get_lenght))
+    
+# def music_progress(self, get_lenght):
+#     if mixer.music.get_busy():
+#         current_time = mixer.music.get_pos() / 1000
+#         progress = (current_time / get_lenght) * 100
+#         print(f"Progress: {progress:.2f}%")
+#         self.after(1000, lambda: self.music_progress(get_lenght))
