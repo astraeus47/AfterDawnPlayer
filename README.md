@@ -3,7 +3,7 @@
 ![After Dawn Music Player](https://i.ibb.co/WH4jPHz/image.png)
 
 **Developer**: 27prxblms @Xzhyan  
-**Version**: 1.20  
+**Version**: 1.30
 **Default Language**: English (US)  
 **Programming Language**: Python
 
