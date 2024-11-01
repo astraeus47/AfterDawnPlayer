@@ -75,7 +75,8 @@ class MainFrame(ctk.CTkFrame):
         width = app_width - 40
         height = 42
 
-        # Repeat and Random mode.
+        # Paused, Repeat and Random mode.
+        self.paused = paused
         self.repeat_enable = repeat_enable
         self.random_enable = random_enable
 
@@ -172,7 +173,7 @@ class MainFrame(ctk.CTkFrame):
             self.buttons_frame,
             width = width_btn,
             text = "",
-            fg_color = purple_one,
+            fg_color = blue_dark,
             hover_color = hover_button,
             image = self.repeat_icon,
             command = self.repeat_mode_enable
@@ -248,65 +249,40 @@ class MainFrame(ctk.CTkFrame):
 
     # Play music.
     def play_music(self, index):
-        # change the button icon.
-        self.pause_and_unpause.configure(image = self.pause_icon, command = self.pause_music)
+        try:
+            # change the button icon.
+            self.pause_and_unpause.configure(image = self.pause_icon, command = self.pause_music)
 
-        self.get_music_positon = index + 1
+            self.get_music_positon = index + 1
 
-        music_name = playlist[index]
-        print(f"playing this song: {music_name}")
+            music_name = playlist[index]
+            print(f"playing this song: {music_name}")
 
-        self.music_list_frame.set_checked_item(index)
+            self.music_list_frame.set_checked_item(index)
 
-        # get_lenght = check_audio_lenght(music_name)
+            # get_lenght = check_audio_lenght(music_name)
 
-        mixer.music.load(music_name)
-        mixer.music.play()
+            mixer.music.load(music_name)
+            mixer.music.play()
 
-        if self.repeat_enable or self.random_enable:
-            self.repeat_or_random(index)
-    
-    def repeat_or_random(self, index):
-        get_busy = mixer.music.get_busy()
-        print(get_busy)
-        if not get_busy:
-
-            if self.repeat_enable:
-                self.play_music(index)
-
-            elif self.random_enable:
-                self.play_music(random.randint(0, len(self.playlist) - 1))
-
-            # if self.repeat_enable:
-            #     if get_music_progress >= 90.66:
-            #         self.play_music(self.current_index)
-
-            # if self.random_enable:
-            #     if get_music_progress >= 90.66:
-            #         self.play_music(random.randint(0, len(self.playlist) - 1))
-
-        self.after(1000, lambda: self.repeat_or_random(index))
-
-        # while True:
-        #     for event in pygame.event.get():
-        #         if event.type == USEREVENT:
-        #             if self.repeat_enable:
-        #                 self.play_music(self.current_index)
-        #             elif self.random_enable:
-        #                 self.play_music(random.randint(0, len(self.playlist) - 1))
-        #             else:
-        #                 self.next_music()
-        #             break
+            if self.repeat_enable or self.random_enable:
+                self.repeat_or_random(index)
+        
+        except Exception as error:
+            print(error)
 
 
     # Pause current music.
     def pause_music(self):
-        mixer.music.pause()
-        self.pause_and_unpause.configure(image = self.play_icon, command = self.unpause_music)
+        if self.paused == False:
+            self.paused = True
+            mixer.music.pause()
+            self.pause_and_unpause.configure(image = self.play_icon, command = self.unpause_music)
 
 
     # Unpause current music.
     def unpause_music(self):
+        self.paused = False
         mixer.music.unpause()
         self.pause_and_unpause.configure(image = self.pause_icon, command = self.pause_music)
 
@@ -333,17 +309,39 @@ class MainFrame(ctk.CTkFrame):
     # Repeat mode.
     def repeat_mode_enable(self):
         if self.repeat_enable == False:
+
             self.repeat_enable = True
+            self.repeat_music_btn.configure(fg_color = blue_dark)
+
             self.random_enable = False
+            self.random_music_btn.configure(fg_color = purple_one)
+
         else:
+            self.repeat_enable = False
+            self.repeat_music_btn.configure(fg_color = purple_one)
+
+            self.random_enable = True
+            self.random_music_btn.configure(fg_color = blue_dark)
+
             return
     
     # Random mode.
     def random_mode_enable(self):
         if self.random_enable == False:
+
             self.random_enable = True
+            self.random_music_btn.configure(fg_color = blue_dark)
+
             self.repeat_enable = False
+            self.repeat_music_btn.configure(fg_color = purple_one)
+
         else:
+            self.random_enable = False
+            self.random_music_btn.configure(fg_color = purple_one)
+
+            self.repeat_enable = True
+            self.repeat_music_btn.configure(fg_color = blue_dark)
+
             return
         
 
@@ -354,6 +352,21 @@ class MainFrame(ctk.CTkFrame):
             set_progress = round(progress, 2)
             self.after(1000, lambda: self.music_progress(get_lenght))
             return set_progress
+
+
+    def repeat_or_random(self, index):
+        if not self.paused:
+            get_busy = mixer.music.get_busy()
+            if not get_busy:
+
+                if self.repeat_enable:
+                    self.play_music(index)
+
+                elif self.random_enable:
+                    self.play_music(random.randint(0, len(playlist) - 1))
+
+                self.after(1000, lambda: self.repeat_or_random(index))
+
 
 
 if __name__ == '__main__':

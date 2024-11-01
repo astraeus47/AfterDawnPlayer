@@ -9,6 +9,7 @@ audio_extensions = (".mp3", ".wav", ".flac", ".ogg", ".aac", ".wma", ".m4a", ".a
 playlist = []
 repeat_enable = True
 random_enable = False
+paused = False
 
 # Color scheme:
 dark_one = '#0f0f0f'
@@ -18,6 +19,7 @@ hover_color = '#0ffa00'
 hover_button = '#0244c0'
 item_list = '#151414'
 blue_one = '#00e0ff'
+blue_dark = '#0a0071'
 
 # Text scheme:
 title_font = ('Doctor Glitch', 30)
