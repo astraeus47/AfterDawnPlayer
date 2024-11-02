@@ -4,7 +4,7 @@ from src.functions import *
 from src.settings import *
 
 # pyinstaller command.
-# pyinstaller --noconfirm --onedir --windowed --add-data "C:\Development\Python\Python312\Lib\site-packages/customtkinter;customtkinter/"  "<Path to Python Script>"
+# pyinstaller --noconfirm --onedir --windowed --add-data "C:\Development\Python\Python312\Lib\site-packages/customtkinter;customtkinter/"  "main.py"
 
 from pygame import time
 from PIL import Image
