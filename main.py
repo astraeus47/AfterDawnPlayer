@@ -280,10 +280,13 @@ class MainFrame(ctk.CTkFrame):
 
     # Pause current music.
     def pause_music(self):
-        if self.paused == False:
+        get_busy = mixer.music.get_busy()
+        if get_busy:
             self.paused = True
             mixer.music.pause()
             self.pause_and_unpause.configure(image = self.play_icon, command = self.unpause_music)
+        else:
+            return
 
 
     # Unpause current music.
