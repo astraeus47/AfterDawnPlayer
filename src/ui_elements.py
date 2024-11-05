@@ -39,8 +39,8 @@ class DrawScrollableFrame(ctk.CTkScrollableFrame):
             text = music_name,
             hover = hover,
             hover_color = hover_color,
-            border_color = '#ffffff',
-            fg_color = '#ffffff',
+            border_color = purple_one,
+            fg_color = hover_color,
             text_color = '#ffffff',
             value = music_path,
             variable = self.radio_button_var

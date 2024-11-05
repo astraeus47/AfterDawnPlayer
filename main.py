@@ -233,16 +233,22 @@ class MainFrame(ctk.CTkFrame):
 
     def play_next_music(self):
         try:
-            index = self.get_music_positon
-            self.play_music(index)
+            if self.random_enable:
+                self.play_music(random.randint(0, len(playlist) - 1))
+            else:
+                index = self.get_music_positon
+                self.play_music(index)
         except:
             print("no songs in playlist")
 
 
     def play_return_music(self):
         try:
-            index = self.get_music_positon - 2
-            self.play_music(index)
+            if self.random_enable:
+                self.play_music(random.randint(0, len(playlist) - 1))
+            else:
+                index = self.get_music_positon - 2
+                self.play_music(index)
         except:
             print("no songs in playlist")
 
@@ -304,9 +310,36 @@ class MainFrame(ctk.CTkFrame):
             self.music_list()
             self.pause_and_unpause.configure(image = self.play_icon, command = self.unpause_music)
             print("playlist cleaned successfully!")
+        
 
-    
-    # Repeat mode.
+    def music_progress(self, get_lenght):
+        if mixer.music.get_busy():
+            current_time = mixer.music.get_pos() / 1000
+            progress = (current_time / get_lenght) * 100
+            set_progress = round(progress, 2)
+            self.after(1000, lambda: self.music_progress(get_lenght))
+            return set_progress
+
+
+    def repeat_or_random(self, index):
+        try:
+            if not self.paused:
+
+                get_busy = mixer.music.get_busy()
+                if not get_busy:
+
+                    if self.repeat_enable:
+                        self.play_music(index)
+
+                    elif self.random_enable:
+                        self.play_music(random.randint(0, len(playlist) - 1))
+
+                self.after(1000, lambda: self.repeat_or_random(index))
+
+        except Exception as error:
+            print(error)
+
+    # Repeat mode enable.
     def repeat_mode_enable(self):
         if self.repeat_enable == False:
 
@@ -325,7 +358,7 @@ class MainFrame(ctk.CTkFrame):
 
             return
     
-    # Random mode.
+    # Random mode enable.
     def random_mode_enable(self):
         if self.random_enable == False:
 
@@ -343,29 +376,6 @@ class MainFrame(ctk.CTkFrame):
             self.repeat_music_btn.configure(fg_color = blue_dark)
 
             return
-        
-
-    def music_progress(self, get_lenght):
-        if mixer.music.get_busy():
-            current_time = mixer.music.get_pos() / 1000
-            progress = (current_time / get_lenght) * 100
-            set_progress = round(progress, 2)
-            self.after(1000, lambda: self.music_progress(get_lenght))
-            return set_progress
-
-
-    def repeat_or_random(self, index):
-        if not self.paused:
-            get_busy = mixer.music.get_busy()
-            if not get_busy:
-
-                if self.repeat_enable:
-                    self.play_music(index)
-
-                elif self.random_enable:
-                    self.play_music(random.randint(0, len(playlist) - 1))
-
-                self.after(1000, lambda: self.repeat_or_random(index))
 
 
 
