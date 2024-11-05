@@ -275,7 +275,10 @@ class MainFrame(ctk.CTkFrame):
                 self.repeat_or_random(index)
         
         except Exception as error:
-            print(error)
+            if isinstance(error, IndexError) and str(error) == "list index out of range":
+                return
+            else:
+                print(error)
 
 
     # Pause current music.
