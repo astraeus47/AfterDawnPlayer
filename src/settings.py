@@ -3,7 +3,7 @@
 # Configure:
 app_width = 620
 app_height = 320
-bg_img_path = "musicplayer/images/background.png"
+bg_img_path = "images/background.png"
 
 audio_extensions = (".mp3", ".wav", ".flac", ".ogg", ".aac", ".wma", ".m4a", ".aiff")
 playlist = []
@@ -28,11 +28,11 @@ button_font = ('Comic Sans MS', 14)
 text_fg_color = 'transparent'
 
 # Button icon images.
-add_icon_path = "musicplayer/icons/add.png"
-remove_icon_path = "musicplayer/icons/remove.png"
-play_icon_path = "musicplayer/icons/play.png"
-pause_icon_path = "musicplayer/icons/pause.png"
-next_icon_path = "musicplayer/icons/next.png"
-return_icon_path = "musicplayer/icons/return.png"
-repeat_icon_path = "musicplayer/icons/repeat.png"
-random_icon_path = "musicplayer/icons/random.png"
+add_icon_path = "icons/add.png"
+remove_icon_path = "icons/remove.png"
+play_icon_path = "icons/play.png"
+pause_icon_path = "icons/pause.png"
+next_icon_path = "icons/next.png"
+return_icon_path = "icons/return.png"
+repeat_icon_path = "icons/repeat.png"
+random_icon_path = "icons/random.png"
