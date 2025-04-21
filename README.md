@@ -1,4 +1,4 @@
-![After Dawn Music Player]([https://i.ibb.co/FXN19g5/afterdawnmp.png](https://camo.githubusercontent.com/db2be18fa406b67f34382079ef8f1c46aedc0138447208c73cbdb4f979640d95/68747470733a2f2f692e6962622e636f2f46584e313967352f61667465726461776e6d702e706e67))
+![After Dawn Music Player]([https://i.ibb.co/FXN19g5/afterdawnmp.png])
 
 # 🎵 After Dawn Music Player
 
