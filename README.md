@@ -1,5 +1,3 @@
-![After Dawn Music Player]([https://i.ibb.co/FXN19g5/afterdawnmp.png])
-
 # 🎵 After Dawn Music Player
 
 Um simples player de música desenvolvido enquanto eu (Astraeus) aprendia a criar interfaces gráficas com Python no Windows, utilizando a biblioteca **CustomTkinter**.  
@@ -58,3 +56,5 @@ Esse projeto já tem algum tempo, mas talvez (bem talvez) eu libere uma nova ver
 **Astraeus**  
 Feito com dedicação durante meus primeiros passos com GUIs em Python.  
 Se quiser trocar uma ideia ou ver mais projetos, me chama!
+
+![After Dawn Music Player](images/afterdawn.png)
