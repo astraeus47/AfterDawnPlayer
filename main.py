@@ -13,7 +13,7 @@ from PIL import Image
 class MusicPlayer(ctk.CTk):
     def __init__(self):
         super().__init__()
-        self.title("ᴅᴇᴠᴇʟᴏᴘᴇᴅ ʙʏ 27ᴘʀxʙʟᴍꜱ")
+        self.title("ᴅᴇᴠᴇʟᴏᴘᴇᴅ ʙʏ ᴀꜱᴛʀᴀᴇᴜꜱ")
         self.geometry(f'{app_width}x{app_height}')
         self.resizable(False, False)
 
